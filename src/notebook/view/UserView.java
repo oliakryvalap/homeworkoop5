@@ -4,6 +4,8 @@ import notebook.controller.UserController;
 import notebook.model.User;
 import notebook.util.Commands;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class UserView {
@@ -21,6 +23,10 @@ public class UserView {
             com = Commands.valueOf(command);
             if (com == Commands.EXIT) return;
             switch (com) {
+                case SHOW_LIST:
+                    List<User> users = userController.readAll();
+                    System.out.println(users);
+                    break;
                 case CREATE:
                     User u = createUser();
                     userController.saveUser(u);

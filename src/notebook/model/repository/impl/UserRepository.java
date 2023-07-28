@@ -5,6 +5,7 @@ import notebook.util.mapper.impl.UserMapper;
 import notebook.model.User;
 import notebook.model.repository.GBRepository;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -57,7 +58,13 @@ public class UserRepository implements GBRepository {
                 .filter(u -> u.getId()
                         .equals(userId))
                 .findFirst().orElseThrow(() -> new RuntimeException("User not found"));
-        editUser.setFirstName(update.getFirstName());
+
+        if(!update.getFirstName().isEmpty()){
+            editUser.setFirstName(update.getFirstName());
+        }else{
+            editUser.setFirstName(editUser.getFirstName());
+        }
+
         editUser.setLastName(update.getLastName());
         editUser.setPhone(update.getPhone());
         write(users);
