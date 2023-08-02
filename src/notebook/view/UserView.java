@@ -4,11 +4,11 @@ import notebook.controller.UserController;
 import notebook.model.User;
 import notebook.util.Commands;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class UserView {
+    Scanner sc = new Scanner(System.in);
     private final UserController userController;
 
     public UserView(UserController userController) {
@@ -19,20 +19,22 @@ public class UserView {
         Commands com;
 
         while (true) {
-            String command = prompt("Введите команду: ");
+            printActions();
+            String command = sc.nextLine();
+            System.out.println("-".repeat(30));
             com = Commands.valueOf(command);
             if (com == Commands.EXIT) return;
             switch (com) {
-                case SHOW_LIST:
+                case SHOW:
                     List<User> users = userController.readAll();
                     System.out.println(users);
                     break;
                 case CREATE:
-                    User u = createUser();
-                    userController.saveUser(u);
+                    userController.saveUser(userController.createUser());
                     break;
                 case READ:
-                    String id = prompt("Идентификатор пользователя: ");
+                    System.out.print("Введите id пользователя ");
+                    String id = sc.nextLine();
                     try {
                         User user = userController.readUser(Long.parseLong(id));
                         System.out.println(user);
@@ -41,23 +43,34 @@ public class UserView {
                         throw new RuntimeException(e);
                     }
                     break;
+                case DELETE:
+                    System.out.print("Введите id пользователя для удаления ");
+                    String id1 = sc.nextLine();
+                    userController.deleteUser(id1);
+                    break;
                 case UPDATE:
-                    String userId = prompt("Enter user id: ");
-                    userController.updateUser(userId, createUser());
+                    System.out.println("Введите id пользователя ");
+                    String userId = sc.nextLine();
+                    userController.updateUser(userId, userController.createUser());
             }
         }
     }
 
-    private String prompt(String message) {
-        Scanner in = new Scanner(System.in);
-        System.out.print(message);
-        return in.nextLine();
-    }
-
-    private User createUser() {
-        String firstName = prompt("Имя: ");
-        String lastName = prompt("Фамилия: ");
-        String phone = prompt("Номер телефона: ");
-        return new User(firstName, lastName, phone);
+    private void printActions(){
+        String textBlock = """
+                Available actions: 
+                
+                SHOW 
+                
+                CREATE 
+                
+                READ 
+                
+                UPDATE 
+                
+                DELETE
+                
+                Введите необходимую команду:""";
+        System.out.print(textBlock + " ");
     }
 }

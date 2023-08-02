@@ -5,7 +5,7 @@ public enum Commands {
     READ,
     CREATE,
     UPDATE,
-    SHOW_LIST,
+    SHOW,
     DELETE,
     EXIT
 }

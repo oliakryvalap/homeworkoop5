@@ -1,14 +1,14 @@
 package notebook.model.repository.impl;
 
-import notebook.model.dao.impl.FileOperation;
+import notebook.model.repository.dao.impl.FileOperation;
 import notebook.util.mapper.impl.UserMapper;
 import notebook.model.User;
 import notebook.model.repository.GBRepository;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Scanner;
 
 public class UserRepository implements GBRepository {
     private final UserMapper mapper;
@@ -65,6 +65,18 @@ public class UserRepository implements GBRepository {
             editUser.setFirstName(editUser.getFirstName());
         }
 
+        if(!update.getLastName().isEmpty()){
+            editUser.setLastName(update.getLastName());
+        }else{
+            editUser.setLastName(editUser.getLastName());
+        }
+
+        if(!update.getPhone().isEmpty()){
+            editUser.setPhone(update.getPhone());
+        }else{
+            editUser.setPhone(editUser.getPhone());
+        }
+
         editUser.setLastName(update.getLastName());
         editUser.setPhone(update.getPhone());
         write(users);
@@ -73,6 +85,15 @@ public class UserRepository implements GBRepository {
 
     @Override
     public boolean delete(Long id) {
+        List<User> users = findAll();
+        for (User user: users) {
+            if(user.getId().equals(id)){
+                users.remove(user);
+                System.out.println("User " + user.getId() + " was successfully deleted!");
+                write(users);
+                return true;
+            }
+        }
         return false;
     }
 
@@ -84,4 +105,16 @@ public class UserRepository implements GBRepository {
         operation.saveAll(lines);
     }
 
+    @Override
+    public User createTemporaryUser() {
+        String firstName = prompt("Имя: ");
+        String lastName = prompt("Фамилия: ");
+        String phone = prompt("Номер телефона: ");
+        return new User(firstName, lastName, phone);
+    }
+    private String prompt(String message) {
+        Scanner in = new Scanner(System.in);
+        System.out.print(message);
+        return in.nextLine();
+    }
 }
