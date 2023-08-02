@@ -33,7 +33,7 @@ public class UserView {
                     userController.saveUser(userController.createUser());
                     break;
                 case READ:
-                    System.out.print("Введите id пользователя ");
+                    System.out.print("Введите id пользователя для просмотра ");
                     String id = sc.nextLine();
                     try {
                         User user = userController.readUser(Long.parseLong(id));
@@ -49,7 +49,7 @@ public class UserView {
                     userController.deleteUser(id1);
                     break;
                 case UPDATE:
-                    System.out.println("Введите id пользователя ");
+                    System.out.println("Введите id пользователя для модернизации ");
                     String userId = sc.nextLine();
                     userController.updateUser(userId, userController.createUser());
             }

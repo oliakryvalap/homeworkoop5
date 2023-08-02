@@ -1,6 +1,6 @@
 package notebook.model.repository.impl;
 
-import notebook.model.repository.dao.impl.FileOperation;
+import notebook.model.repository.dao.impl1.FileOperation;
 import notebook.util.mapper.impl.UserMapper;
 import notebook.model.User;
 import notebook.model.repository.GBRepository;
